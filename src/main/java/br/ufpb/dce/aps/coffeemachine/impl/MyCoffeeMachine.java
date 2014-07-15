@@ -19,10 +19,7 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine{
 	public void insertCoin(Coin coin) {
 		
 		totalcoin += coin.getValue();
-		int inteiro = totalcoin / 100;
-		int centavos = totalcoin % 100;
-		
-		factory.getDisplay().info("Total: US$ " +inteiro+ "." +centavos);
+		factory.getDisplay().info("Total: US$ " + totalcoin / 100 + "." +totalcoin % 100);
 		
 		
 	}
