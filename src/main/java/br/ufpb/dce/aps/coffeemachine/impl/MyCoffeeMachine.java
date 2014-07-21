@@ -5,6 +5,7 @@ import br.ufpb.dce.aps.coffeemachine.CoffeeMachine;
 import br.ufpb.dce.aps.coffeemachine.CoffeeMachineException;
 import br.ufpb.dce.aps.coffeemachine.Coin;
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
+import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 
@@ -31,13 +32,16 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 	}
 
 	public void cancel() throws CoffeeMachineException {
-
+		
 		if (this.totalCoin == 0) {
 			throw new CoffeeMachineException("Nenhuma moeda inserida");
-		}
-		{
-
+		}else{
+			this.factory = factory;
+			factory.getDisplay().warn(Messages.CANCEL_MESSAGE);
+			factory.getCashBox().release(Coin.halfDollar);
+			factory.getDisplay().info(Messages.INSERT_COINS_MESSAGE);
 		}
 
 	}
+
 }
