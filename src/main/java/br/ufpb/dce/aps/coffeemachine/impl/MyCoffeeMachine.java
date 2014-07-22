@@ -13,7 +13,7 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 
 	int totalCoin;
 	private ComponentsFactory factory;
-	
+
 	ArrayList<Coin> moedas = new ArrayList<Coin>();
 
 	public MyCoffeeMachine(ComponentsFactory factory) {
@@ -33,27 +33,24 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 		} catch (NullPointerException e) {
 			throw new CoffeeMachineException("erro");
 		}
-		
-	
-				
-			}
-			
-	
+
+	}
 
 	public void cancel() throws CoffeeMachineException {
-		
+
 		if (this.totalCoin == 0) {
 			throw new CoffeeMachineException("Não houve moeda inserida");
 		}
 
 		if (this.moedas.size() > 0) {
-			
+
 			Coin[] reverso = Coin.reverse();
-			this.factory.getDisplay().warn("Cancelling drink. Please, get your coins.");
-			for (Coin re : reverso) {
+			this.factory.getDisplay().warn(
+					"Cancelling drink. Please, get your coins.");
+			for (Coin rev : reverso) {
 
 				for (Coin aux : this.moedas) {
-					if (aux == re) {
+					if (aux == rev) {
 						this.factory.getCashBox().release(aux);
 					}
 				}
