@@ -7,12 +7,16 @@ import br.ufpb.dce.aps.coffeemachine.CoffeeMachine;
 import br.ufpb.dce.aps.coffeemachine.CoffeeMachineException;
 import br.ufpb.dce.aps.coffeemachine.Coin;
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
+import br.ufpb.dce.aps.coffeemachine.Dispenser;
+import br.ufpb.dce.aps.coffeemachine.Drink;
 import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 
 	int totalCoin;
 	private ComponentsFactory factory;
+	private Drink drink;
+	private Dispenser dispensa;
 
 	ArrayList<Coin> moedas = new ArrayList<Coin>();
 
@@ -57,5 +61,23 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 			}
 			this.factory.getDisplay().info("Insert coins and select a drink!");
 		}
+	}
+
+	public void select(Drink drink) {
+		
+		this.factory.getCupDispenser().contains(1);
+		this.factory.getWaterDispenser().contains(100);
+		this.factory.getCoffeePowderDispenser().contains(100);
+		
+		this.factory.getDisplay().info(Messages.MIXING);
+		this.factory.getCoffeePowderDispenser().release(202);
+		this.factory.getWaterDispenser().release(231);
+		
+		this.factory.getDisplay().info(Messages.RELEASING);
+		this.factory.getCupDispenser().release(1);
+		this.factory.getDrinkDispenser().release(200);
+		this.factory.getDisplay().info(Messages.TAKE_DRINK);
+		
+		this.factory.getDisplay().info(Messages.INSERT_COINS);
 	}
 }
