@@ -91,7 +91,8 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 		this.factory.getDisplay().info(Messages.TAKE_DRINK);
 
 		this.factory.getDisplay().info(Messages.INSERT_COINS);
-
+		
+		this.moedas.clear();
 		// 10
 
 	}
