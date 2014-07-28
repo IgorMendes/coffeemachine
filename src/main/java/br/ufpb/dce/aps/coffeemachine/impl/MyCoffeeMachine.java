@@ -1,5 +1,7 @@
 package br.ufpb.dce.aps.coffeemachine.impl;
 
+import static org.mockito.Matchers.anyDouble;
+
 import java.util.ArrayList;
 
 import net.compor.frameworks.jcf.api.ComporFacade;
@@ -63,35 +65,61 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 		}
 	}
 
+	public void cancelSemIgredientes() throws CoffeeMachineException {
+
+		if (this.totalCoin == 0) {
+			throw new CoffeeMachineException("Não houve moeda inserida");
+		}
+
+		if (this.moedas.size() > 0) {
+
+			Coin[] reverso = Coin.reverse();
+			for (Coin rev : reverso) {
+
+				for (Coin aux : this.moedas) {
+					if (aux == rev) {
+						this.factory.getCashBox().release(aux);
+					}
+				}
+			}
+			this.factory.getDisplay().info("Insert coins and select a drink!");
+		}
+	}
+
 	public void select(Drink drink) {
 
 		this.factory.getCupDispenser().contains(1);
 		this.factory.getWaterDispenser().contains(100);
-		this.factory.getCoffeePowderDispenser().contains(100);
+		if (!this.factory.getCoffeePowderDispenser().contains(anyDouble())) {
+			this.factory.getDisplay().warn(Messages.OUT_OF_COFFEE_POWDER);
+			cancelSemIgredientes();
 
-		if (drink == drink.BLACK_SUGAR) {
+		} else {
 
-			this.factory.getSugarDispenser().contains(100);
+			if (drink == drink.BLACK_SUGAR) {
+
+				this.factory.getSugarDispenser().contains(100);
+
+			}
+
+			this.factory.getDisplay().info(Messages.MIXING);
+			this.factory.getCoffeePowderDispenser().release(202);
+			this.factory.getWaterDispenser().release(231);
+
+			if (drink == drink.BLACK_SUGAR) {
+
+				this.factory.getSugarDispenser().release(100);
+
+			}
+
+			this.factory.getDisplay().info(Messages.RELEASING);
+			this.factory.getCupDispenser().release(1);
+			this.factory.getDrinkDispenser().release(200);
+			this.factory.getDisplay().info(Messages.TAKE_DRINK);
+			this.factory.getDisplay().info("Insert coins and select a drink!");
+
+			this.moedas.clear();
 
 		}
-
-		this.factory.getDisplay().info(Messages.MIXING);
-		this.factory.getCoffeePowderDispenser().release(202);
-		this.factory.getWaterDispenser().release(231);
-
-		if (drink == drink.BLACK_SUGAR) {
-
-			this.factory.getSugarDispenser().release(100);
-
-		}
-
-		this.factory.getDisplay().info(Messages.RELEASING);
-		this.factory.getCupDispenser().release(1);
-		this.factory.getDrinkDispenser().release(200);
-		this.factory.getDisplay().info(Messages.TAKE_DRINK);
-		this.factory.getDisplay().info("Insert coins and select a drink!");
-
-		this.moedas.clear();
-
 	}
 }
