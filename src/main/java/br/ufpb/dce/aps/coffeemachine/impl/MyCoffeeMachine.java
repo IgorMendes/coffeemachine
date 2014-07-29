@@ -96,30 +96,34 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 
 		} else {
 
-			if (drink == drink.BLACK_SUGAR) {
+			if (drink == drink.BLACK_SUGAR
+					&& !this.factory.getSugarDispenser().contains(anyDouble())) {
 
-				this.factory.getSugarDispenser().contains(100);
+				this.factory.getDisplay().warn(Messages.OUT_OF_SUGAR);
+				cancelSemIgredientes();
+			} else {
+
+				this.factory.getDisplay().info(Messages.MIXING);
+				this.factory.getCoffeePowderDispenser().release(202);
+				this.factory.getWaterDispenser().release(231);
+
+				if (drink == drink.BLACK_SUGAR) {
+
+					this.factory.getSugarDispenser().release(100);
+
+				}
+
+				this.factory.getDisplay().info(Messages.RELEASING);
+				this.factory.getCupDispenser().release(1);
+				this.factory.getDrinkDispenser().release(200);
+				this.factory.getDisplay().info(Messages.TAKE_DRINK);
+				this.factory.getDisplay().info(
+						"Insert coins and select a drink!");
+
+				this.moedas.clear();
 
 			}
-
-			this.factory.getDisplay().info(Messages.MIXING);
-			this.factory.getCoffeePowderDispenser().release(202);
-			this.factory.getWaterDispenser().release(231);
-
-			if (drink == drink.BLACK_SUGAR) {
-
-				this.factory.getSugarDispenser().release(100);
-
-			}
-
-			this.factory.getDisplay().info(Messages.RELEASING);
-			this.factory.getCupDispenser().release(1);
-			this.factory.getDrinkDispenser().release(200);
-			this.factory.getDisplay().info(Messages.TAKE_DRINK);
-			this.factory.getDisplay().info("Insert coins and select a drink!");
-
-			this.moedas.clear();
-
 		}
+
 	}
 }
