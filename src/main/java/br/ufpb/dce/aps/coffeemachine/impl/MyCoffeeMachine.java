@@ -88,49 +88,55 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 
 	public void select(Drink drink) {
 
-		this.factory.getCupDispenser().contains(1);
-
-		if (!this.factory.getWaterDispenser().contains(anyDouble())) {
-			this.factory.getDisplay().warn(Messages.OUT_OF_WATER);
+		if (!this.factory.getCupDispenser().contains(1)) {
+			this.factory.getDisplay().warn(Messages.OUT_OF_CUP);
 			cancelSemIgredientes();
 		} else {
 
-			if (!this.factory.getCoffeePowderDispenser().contains(anyDouble())) {
-				this.factory.getDisplay().warn(Messages.OUT_OF_COFFEE_POWDER);
+			if (!this.factory.getWaterDispenser().contains(anyDouble())) {
+				this.factory.getDisplay().warn(Messages.OUT_OF_WATER);
 				cancelSemIgredientes();
-
 			} else {
 
-				if (drink == drink.BLACK_SUGAR
-						&& !this.factory.getSugarDispenser().contains(
-								anyDouble())) {
-
-					this.factory.getDisplay().warn(Messages.OUT_OF_SUGAR);
+				if (!this.factory.getCoffeePowderDispenser().contains(
+						anyDouble())) {
+					this.factory.getDisplay().warn(
+							Messages.OUT_OF_COFFEE_POWDER);
 					cancelSemIgredientes();
+
 				} else {
 
-					this.factory.getDisplay().info(Messages.MIXING);
-					this.factory.getCoffeePowderDispenser().release(202);
-					this.factory.getWaterDispenser().release(231);
+					if (drink == drink.BLACK_SUGAR
+							&& !this.factory.getSugarDispenser().contains(
+									anyDouble())) {
 
-					if (drink == drink.BLACK_SUGAR) {
+						this.factory.getDisplay().warn(Messages.OUT_OF_SUGAR);
+						cancelSemIgredientes();
+					} else {
 
-						this.factory.getSugarDispenser().release(100);
+						this.factory.getDisplay().info(Messages.MIXING);
+						this.factory.getCoffeePowderDispenser().release(202);
+						this.factory.getWaterDispenser().release(231);
+
+						if (drink == drink.BLACK_SUGAR) {
+
+							this.factory.getSugarDispenser().release(100);
+
+						}
+
+						this.factory.getDisplay().info(Messages.RELEASING);
+						this.factory.getCupDispenser().release(1);
+						this.factory.getDrinkDispenser().release(200);
+						this.factory.getDisplay().info(Messages.TAKE_DRINK);
+						this.factory.getDisplay().info(
+								"Insert coins and select a drink!");
+
+						this.moedas.clear();
 
 					}
-
-					this.factory.getDisplay().info(Messages.RELEASING);
-					this.factory.getCupDispenser().release(1);
-					this.factory.getDrinkDispenser().release(200);
-					this.factory.getDisplay().info(Messages.TAKE_DRINK);
-					this.factory.getDisplay().info(
-							"Insert coins and select a drink!");
-
-					this.moedas.clear();
-
 				}
-			}
 
+			}
 		}
 	}
 }
