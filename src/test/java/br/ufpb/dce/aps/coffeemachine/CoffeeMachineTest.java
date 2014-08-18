@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -376,6 +377,7 @@ public abstract class CoffeeMachineTest {
 		verifyNewSession(inOrder);
 	}
 	
+	
 	@Test
 	public void selectWhiteSugarWithChange() {
 		InOrder inOrder = prepareScenarioWithCoins(Coin.halfDollar);
@@ -394,8 +396,7 @@ public abstract class CoffeeMachineTest {
 		verifyWhiteSugarMix(inOrder);
 		verifyDrinkRelease(inOrder);
 		verifyCloseSession(inOrder, Coin.dime, Coin.nickel);
-	}
-
+	}	
 
 	private void doCount(Coin coin, int amount) {
 		when(cashBox.count(coin)).thenReturn(amount);
