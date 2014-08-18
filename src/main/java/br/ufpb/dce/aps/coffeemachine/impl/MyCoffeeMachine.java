@@ -104,6 +104,11 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 
 	public void select(Drink drink) {
 
+		if (calculaTroco() < 0) {
+			this.factory.getDisplay().warn(Messages.NO_ENOUGHT_MONEY);
+			this.devolveMoedas();
+			return;
+		}
 		condicao = (Boolean) requestService("verifyDrinkType", drink);
 		if (!condicao) {
 			devolveMoedas();
