@@ -115,6 +115,7 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 			return;
 		}
 		if (retornaTroco(calculaTroco())) {
+			this.factory.getDisplay().warn(Messages.NO_ENOUGHT_CHANGE);
 			devolveMoedas();
 			return;
 		}
