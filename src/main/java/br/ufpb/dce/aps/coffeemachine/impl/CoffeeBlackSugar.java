@@ -25,6 +25,6 @@ public class CoffeeBlackSugar extends CoffeeBlack {
 	@Service
 	public void releaseBlackSugarDrink() {
 		releaseBlackDrink();
-		factory.getSugarDispenser().release(5.0);
+		factory.getSugarDispenser().release(100);
 	}
 }
