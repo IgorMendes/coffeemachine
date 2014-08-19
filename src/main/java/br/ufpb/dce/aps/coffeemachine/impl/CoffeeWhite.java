@@ -2,6 +2,7 @@ package br.ufpb.dce.aps.coffeemachine.impl;
 
 import net.compor.frameworks.jcf.api.Service;
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
+import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class CoffeeWhite extends CoffeeBlack {
 
@@ -14,7 +15,11 @@ public class CoffeeWhite extends CoffeeBlack {
 		if (!verifyBlackDrink()) {
 			return false;
 		}
-		factory.getCreamerDispenser().contains(100);
+		if (!factory.getCreamerDispenser().contains(100)) {
+			this.factory.getDisplay().warn(Messages.OUT_OF_CREAMER);
+			return false;
+		}
+		
 		return true;
 
 	}
