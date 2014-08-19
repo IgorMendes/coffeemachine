@@ -15,7 +15,7 @@ public class CoffeeBlackSugar extends CoffeeBlack {
 		if (!verifyBlackDrink()) {
 			return false;
 		}
-		if (!this.factory.getSugarDispenser().contains(100)) {
+		if (!this.factory.getSugarDispenser().contains(5)) {
 			this.factory.getDisplay().warn(Messages.OUT_OF_SUGAR);
 			return false;
 		}
@@ -25,6 +25,6 @@ public class CoffeeBlackSugar extends CoffeeBlack {
 	@Service
 	public void releaseBlackSugarDrink() {
 		releaseBlackDrink();
-		factory.getSugarDispenser().release(100);
+		factory.getSugarDispenser().release(5);
 	}
 }
