@@ -177,14 +177,14 @@ public abstract class CoffeeMachineTest {
 
 	private void verifyBlackPlan(InOrder inOrder) {
 		inOrder.verify(cupDispenser).contains(1);
-		inOrder.verify(waterDispenser).contains(anyDouble());
-		inOrder.verify(coffeePowderDispenser).contains(anyDouble());
+		inOrder.verify(waterDispenser).contains(100);
+		inOrder.verify(coffeePowderDispenser).contains(15);
 	}
 
 	private void verifyBlackMix(InOrder inOrder) {
 		inOrder.verify(display).info(Messages.MIXING);
-		inOrder.verify(coffeePowderDispenser).release(anyDouble());
-		inOrder.verify(waterDispenser).release(anyDouble());
+		inOrder.verify(coffeePowderDispenser).release(15);
+		inOrder.verify(waterDispenser).release(100);
 	}
 
 	@Test
@@ -233,12 +233,12 @@ public abstract class CoffeeMachineTest {
 
 	private void verifyBlackSugarPlan(InOrder inOrder) {
 		verifyBlackPlan(inOrder);
-		inOrder.verify(sugarDispenser).contains(anyDouble());
+		inOrder.verify(sugarDispenser).contains(5);
 	}
 
 	private void verifyBlackSugarMix(InOrder inOrder) {
 		verifyBlackMix(inOrder);
-		inOrder.verify(sugarDispenser).release(anyDouble());
+		inOrder.verify(sugarDispenser).release(5);
 	}
 
 	@Test
@@ -502,28 +502,33 @@ public abstract class CoffeeMachineTest {
 		InOrder inOrder = prepareScenarioWithCoins(Coin.quarter, Coin.dime);
 
 		// Simulating returns
-		doContain(coffeePowderDispenser, anyDouble());
-		doContain(waterDispenser, anyDouble());
-		doContain(cupDispenser, 1);
+		doContainBlackIngredients();
 
 		// Operation under test
 		facade.select(Drink.BLACK);
 
 		// Verification
-		inOrder.verify(cupDispenser).contains(1);
-		inOrder.verify(waterDispenser).contains(100);
-		inOrder.verify(coffeePowderDispenser).contains(15);
+		verifyBlackPlan(inOrder);
+		verifyBlackMix(inOrder);
+		verifyDrinkRelease(inOrder);
+		verifyNewSession(inOrder);
+	}
 
-		inOrder.verify(display).info(Messages.MIXING);
-		inOrder.verify(coffeePowderDispenser).release(15);
-		inOrder.verify(waterDispenser).release(100);
+	@Test
+	public void blackSugarIngredientsQuantities() {
+		InOrder inOrder = prepareScenarioWithCoins(Coin.quarter, Coin.dime);
 
-		inOrder.verify(display).info(Messages.RELEASING);
-		inOrder.verify(cupDispenser).release(1);
-		inOrder.verify(drinkDispenser).release(100);
-		inOrder.verify(display).info(Messages.TAKE_DRINK);
+		// Simulating returns
+		doContainBlackSugarIngredients();
 
-		verifyNewSession(inOrder);		
+		// Operation under test
+		facade.select(Drink.BLACK_SUGAR);
+
+		// Verification
+		verifyBlackSugarPlan(inOrder);
+		verifyBlackSugarMix(inOrder);
+		verifyDrinkRelease(inOrder);
+		verifyNewSession(inOrder);
 	}
 
 
@@ -590,7 +595,7 @@ public abstract class CoffeeMachineTest {
 	private void verifyDrinkRelease(InOrder inOrder) {
 		inOrder.verify(display).info(Messages.RELEASING);
 		inOrder.verify(cupDispenser).release(1);
-		inOrder.verify(drinkDispenser).release(anyDouble());
+		inOrder.verify(drinkDispenser).release(100);
 		inOrder.verify(display).info(Messages.TAKE_DRINK);
 	}
 
