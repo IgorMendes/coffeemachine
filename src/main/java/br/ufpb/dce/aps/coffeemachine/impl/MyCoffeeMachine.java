@@ -13,17 +13,20 @@ import br.ufpb.dce.aps.coffeemachine.Messages;
 public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 
 	private ComponentsFactory factory;
-	private ArrayList<Coin> moedas;
-	private int cedulas, centavos;
+	private ArrayList<Coin> listaMoedas;
+	private ArrayList<Coin> listaTroco;
+	private int[] vetorTroco = new int[6];
+	private int cedulas = 0;
+	private int centavos = 0;
 	boolean condicao = true;
 	private final int PRECODOCAFE = 35;
+	
+
 
 	public MyCoffeeMachine(ComponentsFactory factory) {
 		this.factory = factory;
 		this.factory.getDisplay().info("Insert coins and select a drink!");
-		this.cedulas = 0;
-		this.centavos = 0;
-		this.moedas = new ArrayList<Coin>();
+		this.listaMoedas = new ArrayList<Coin>();
 		this.addComponents();
 	}
 
@@ -40,7 +43,7 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 		if (coin == null) {
 			throw new CoffeeMachineException("Error: Sem Moedas");
 		}
-		this.moedas.add(coin);
+		this.listaMoedas.add(coin);
 		this.cedulas += coin.getValue() / 100;
 		this.centavos += coin.getValue() % 100;
 		this.factory.getDisplay().info(
@@ -56,13 +59,13 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 	}
 
 	private void limpaListaMoedas() {
-		this.moedas.clear();
+		this.listaMoedas.clear();
 	}
 
 	private void devolveMoedas() {
-		for (Coin r : Coin.reverse()) {
-			for (Coin aux : this.moedas) {
-				if (aux == r) {
+		for (Coin rev : Coin.reverse()) {
+			for (Coin aux : this.listaMoedas) {
+				if (aux == rev) {
 					this.factory.getCashBox().release(aux);
 				}
 			}
@@ -71,29 +74,38 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 		this.factory.getDisplay().info(Messages.INSERT_COINS);
 	}
 
-	private boolean retornaTroco(int troco) {
+
+	
+	private int[] organizaTroco(int troco) throws CoffeeMachineException {
+		int i = 0;
 		for (Coin rev : Coin.reverse()) {
 			if (rev.getValue() <= troco && factory.getCashBox().count(rev) > 0) {
-				troco -= rev.getValue();
+				while (rev.getValue() <= troco) {
+					troco -= rev.getValue();
+					this.vetorTroco[i]++;
+				}
+			}
+			i++;
+		}
+		if (troco != 0) {
+			throw new CoffeeMachineException("");
+		}
+		return this.vetorTroco;
+	}
+	private void releaseCoins(int[] quantCoin) {
+		for (int i = 0; i < quantCoin.length; i++) {
+			int count = quantCoin[i];
+			Coin coin = Coin.reverse()[i];
+
+			for (int k = 1; k <= count; k++) {
+				this.factory.getCashBox().release(coin);
 			}
 		}
-		boolean b = troco == 0;
-		return !b;
 	}
-
-	private void releaseCoins(int troco) {
-		for (Coin r : Coin.reverse()) {
-			while (r.getValue() <= troco) {
-				this.factory.getCashBox().release(r);
-				troco -= r.getValue();
-			}
-		}
-	}
-
 	private int calculaTroco() {
 		int count = 0;
 		for (Coin rev : Coin.reverse()) {
-			for (Coin aux : this.moedas) {
+			for (Coin aux : this.listaMoedas) {
 				if (aux == rev) {
 					count += aux.getValue();
 				}
@@ -114,15 +126,18 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 			devolveMoedas();
 			return;
 		}
-		if (retornaTroco(calculaTroco())) {
+
+		try {
+			this.vetorTroco = organizaTroco(calculaTroco());
+		} catch (Exception e) {
 			this.factory.getDisplay().warn(Messages.NO_ENOUGHT_CHANGE);
-			devolveMoedas();
+			this.devolveMoedas();
 			return;
 		}
 		this.factory.getDisplay().info(Messages.MIXING);
 		requestService("selectDrinkType", drink);
 		requestService("releaseDrink");
-		releaseCoins(calculaTroco());
+		releaseCoins(vetorTroco);
 
 		this.limpaListaMoedas();
 		this.factory.getDisplay().info(Messages.INSERT_COINS);
