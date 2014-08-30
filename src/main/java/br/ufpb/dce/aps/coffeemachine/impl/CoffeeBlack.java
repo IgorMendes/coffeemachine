@@ -4,7 +4,7 @@ import net.compor.frameworks.jcf.api.Service;
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 import br.ufpb.dce.aps.coffeemachine.Messages;
 
-public class CoffeeBlack extends Coffee {
+public class CoffeeBlack extends Drinks {
 
 	public ComponentsFactory factory;
 

@@ -19,7 +19,7 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 	private int cedulas = 0;
 	private int centavos = 0;
 	boolean condicao = true;
-	private final int PRECODOCAFE = 35;
+	private int PRECODOCAFE = 35;
 	
 
 
@@ -37,6 +37,7 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 		this.add(new CoffeeBlackSugar(this.factory));
 		this.add(new CoffeeWhite(this.factory));
 		this.add(new CoffeeWhiteSugar(this.factory));
+		this.add(new Bouillon(this.factory));
 	}
 
 	public void insertCoin(Coin coin) {
@@ -116,6 +117,11 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 
 	public void select(Drink drink) {
 
+		if(drink == drink.BOUILLON){
+			this.PRECODOCAFE = 25;
+		}
+		
+		
 		if (calculaTroco() < 0) {
 			this.factory.getDisplay().warn(Messages.NO_ENOUGHT_MONEY);
 			this.devolveMoedas();
@@ -135,6 +141,7 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 			return;
 		}
 		this.factory.getDisplay().info(Messages.MIXING);
+		
 		requestService("selectDrinkType", drink);
 		requestService("releaseDrink");
 		releaseCoins(vetorTroco);
