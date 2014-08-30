@@ -21,7 +21,8 @@ public class Bouillon extends CoffeeBlack{
 			this.factory.getDisplay().warn(Messages.OUT_OF_WATER);
 			return false;
 		}
-		if (!this.factory.getBouillonDispenser().contains(10)) {
+		if (!this.factory.getBouillonDispenser().contains(10)){
+			this.factory.getDisplay().warn(Messages.OUT_OF_BOUILLON_POWDER);
 			return false;
 		}
 		
