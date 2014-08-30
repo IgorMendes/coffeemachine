@@ -21,15 +21,6 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 	boolean condicao = true;
 	private int DRINKVALUE = 35;
 	
-
-
-	public MyCoffeeMachine(ComponentsFactory factory) {
-		this.factory = factory;
-		this.factory.getDisplay().info("Insert coins and select a drink!");
-		this.listaMoedas = new ArrayList<Coin>();
-		this.addComponents();
-	}
-
 	@Override
 	protected void addComponents() {
 
@@ -148,5 +139,12 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 
 		this.limpaListaMoedas();
 		this.factory.getDisplay().info(Messages.INSERT_COINS);
+	}
+
+	public void setFactory(ComponentsFactory factory) {
+		this.factory = factory;
+		this.factory.getDisplay().info("Insert coins and select a drink!");
+		this.listaMoedas = new ArrayList<Coin>();
+		this.addComponents();
 	}
 }
