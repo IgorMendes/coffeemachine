@@ -19,7 +19,7 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 	private int cedulas = 0;
 	private int centavos = 0;
 	boolean condicao = true;
-	private int PRECODOCAFE = 35;
+	private int DRINKVALUE = 35;
 	
 
 
@@ -112,13 +112,13 @@ public class MyCoffeeMachine extends ComporFacade implements CoffeeMachine {
 				}
 			}
 		}
-		return count - this.PRECODOCAFE;
+		return count - this.DRINKVALUE;
 	}
 
 	public void select(Drink drink) {
 
 		if(drink == drink.BOUILLON){
-			this.PRECODOCAFE = 25;
+			this.DRINKVALUE = 25;
 		}
 		
 		
